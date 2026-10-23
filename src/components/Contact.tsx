@@ -344,7 +344,7 @@ export const Contact: React.FC = () => {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Rahul Sharma"
+                      placeholder="e.g. Aditya Rajak"
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-600 text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                       required
                       disabled={isSubmitting}
