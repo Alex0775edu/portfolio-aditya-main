@@ -49,7 +49,7 @@ export interface SkillSumService {
 export const PERSONAL_INFO = {
   name: "Aditya Kumar",
   title: "Full Stack Web Developer | Founder of SkillSum Innovations",
-  brand: "AaDiTeCh",
+  brand: "Aditya",
   tagline: "“I build responsive websites, practical management systems, and digital experiences that turn ideas into useful products.”",
   location: "Ballia, Uttar Pradesh, India",
   email: "aaditya0775@gmail.com",
