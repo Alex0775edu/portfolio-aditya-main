@@ -178,7 +178,7 @@ const calculateAttendanceRatio = (presentCount, totalSessions) => {
                 <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
               </div>
               <span className="text-xs font-mono text-slate-400 pl-2 hidden sm:inline">
-                AaDiTeCh Workstation • v2.4
+                Aditya's Workstation • v2.4
               </span>
             </div>
 

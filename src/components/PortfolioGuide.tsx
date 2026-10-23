@@ -97,14 +97,14 @@ export const PortfolioGuide: React.FC = () => {
           setIsOpen(true);
         }}
         className="fixed bottom-6 left-6 z-40 px-4 py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 shadow-[0_0_25px_rgba(0,240,255,0.25)] backdrop-blur-xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2.5 group"
-        aria-label="Open AaDiTeCh Portfolio Guide"
+        aria-label="Open Aditya's Portfolio Guide"
       >
         <div className="relative">
           <Bot className="w-5 h-5 text-cyan-400 group-hover:rotate-12 transition-transform" />
           <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
         </div>
         <span className="text-xs font-mono font-bold tracking-wide">
-          AaDiTeCh Guide
+          Portfolio Guide
         </span>
       </button>
 
@@ -128,7 +128,7 @@ export const PortfolioGuide: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white font-mono flex items-center gap-2">
-                    <span>AaDiTeCh Portfolio Guide</span>
+                    <span>Aditya's Portfolio Guide</span>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                       Interactive Navigator
                     </span>
@@ -203,7 +203,7 @@ export const PortfolioGuide: React.FC = () => {
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 Verified Client-Side Navigator (Zero API Key Exposure)
               </span>
-              <span>AaDiTeCh Engine</span>
+              <span>Aditya's System</span>
             </div>
 
           </div>

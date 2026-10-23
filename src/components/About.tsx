@@ -105,7 +105,7 @@ export const About: React.FC = () => {
                     </span>
                   </div>
                   <span className="text-xs text-cyan-300 font-sans">
-                    SkillSum Innovations • AaDiTeCh
+                    SkillSum Innovations • Web Developer
                   </span>
                   <div className="flex items-center gap-1.5 text-[11px] text-slate-300 pt-1">
                     <MapPin className="w-3 h-3 text-cyan-400" />

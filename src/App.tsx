@@ -66,7 +66,7 @@ export const App: React.FC = () => {
             </div>
           </div>
           <div className="mt-4 font-mono text-xs text-cyan-400 tracking-widest uppercase">
-            Initialising AaDiTeCh Core...
+            Initialising Portfolio...
           </div>
         </div>
       )}

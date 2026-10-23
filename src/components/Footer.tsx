@@ -55,10 +55,10 @@ export const Footer: React.FC = () => {
               </div>
               <div>
                 <span className="text-xl font-bold tracking-tight text-white font-mono">
-                  {PERSONAL_INFO.brand}
+                  Aditya Kumar
                 </span>
                 <span className="text-xs text-slate-400 block">
-                  {PERSONAL_INFO.name}
+                  Full Stack Web Developer
                 </span>
               </div>
             </div>
@@ -157,7 +157,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
           <div>
-            &copy; {currentYear} Aditya Kumar ({PERSONAL_INFO.brand}). All rights reserved.
+            &copy; {currentYear} Aditya Kumar. All rights reserved.
           </div>
 
           <div className="italic text-slate-400 text-center font-sans">

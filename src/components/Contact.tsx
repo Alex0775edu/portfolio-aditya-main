@@ -7,12 +7,15 @@ import {
   Check, 
   Send, 
   MessageSquare, 
-  ExternalLink,
-  Sparkles,
-  AlertCircle
+  Sparkles, 
+  AlertCircle, 
+  Loader2, 
+  CheckCircle2 
 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, LinkedinIcon } from './BrandIcons';
+import { sounds } from '../utils/soundEffects';
 
 export const Contact: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -23,11 +26,14 @@ export const Contact: React.FC = () => {
     message: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(PERSONAL_INFO.email);
     setCopied(true);
+    sounds.playClick();
     setTimeout(() => setCopied(false), 2500);
   };
 
@@ -44,7 +50,7 @@ export const Contact: React.FC = () => {
     return errs;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -52,14 +58,53 @@ export const Contact: React.FC = () => {
       return;
     }
     setErrors({});
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-    // Construct mailto URL to launch user's real email client directly with prefilled parameters
-    const subjectEncoded = encodeURIComponent(`[Portfolio Inquiry] ${formData.subject} - from ${formData.name}`);
+    const templateParams = {
+      to_name: 'Aditya Kumar',
+      from_name: formData.name,
+      from_email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+      reply_to: formData.email
+    };
+
+    try {
+      // Send real email directly using Aditya's EmailJS service
+      await emailjs.send(
+        'service_smn00le',
+        'template_4xjvh18',
+        templateParams,
+        'JufNnUp-r3zhFtwod'
+      );
+
+      setIsSubmitting(false);
+      setSubmitStatus('success');
+      setStatusMessage('Thank you! Your message has been delivered directly to Aditya. He will get back to you shortly.');
+      sounds.playChime();
+
+      // Reset form on success
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (err) {
+      console.error('EmailJS transmission error:', err);
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setStatusMessage('Could not dispatch message automatically over EmailJS. You can send it directly using the button below or chat on WhatsApp.');
+    }
+  };
+
+  const handleMailtoFallback = () => {
+    const subjectEncoded = encodeURIComponent(`[Portfolio Inquiry] ${formData.subject || 'New Project'}`);
     const bodyEncoded = encodeURIComponent(
-      `Hello Aditya,\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}\n\nSent from your portfolio contact form.`
+      `Hello Aditya,\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}\n`
     );
     window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subjectEncoded}&body=${bodyEncoded}`;
-    setFormSubmitted(true);
   };
 
   return (
@@ -80,7 +125,7 @@ export const Contact: React.FC = () => {
             Get In <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-400">Touch</span>
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Reach out directly for website development, management systems, or tech collaborations.
+            Have a project in mind, need a responsive website, or want to collaborate? Send a message directly to Aditya's inbox.
           </p>
         </div>
 
@@ -89,11 +134,11 @@ export const Contact: React.FC = () => {
           {/* Left Column: Direct Contact Info & Working Actions (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
             
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#0b1222]/90 border border-slate-800 shadow-xl space-y-6">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#0b1222]/90 border border-slate-800 shadow-xl space-y-6 text-left">
               <div>
                 <h3 className="text-xl font-bold text-white font-mono flex items-center gap-2">
                   <span>Aditya Kumar</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">
                   Full Stack Web Developer • Founder @ SkillSum Innovations
@@ -167,12 +212,14 @@ export const Contact: React.FC = () => {
               <div className="pt-2 grid grid-cols-2 gap-3">
                 <a
                   href={`mailto:${PERSONAL_INFO.email}`}
+                  onClick={() => sounds.playClick()}
                   className="py-2.5 px-4 rounded-xl text-xs font-mono font-bold bg-cyan-400 hover:bg-cyan-300 text-black text-center transition-colors shadow-md shadow-cyan-500/20"
                 >
                   Email Aditya
                 </a>
                 <a
                   href={`tel:${PERSONAL_INFO.phone}`}
+                  onClick={() => sounds.playClick()}
                   className="py-2.5 px-4 rounded-xl text-xs font-mono font-bold bg-emerald-500 hover:bg-emerald-400 text-black text-center transition-colors shadow-md shadow-emerald-500/20"
                 >
                   Call Directly
@@ -189,6 +236,7 @@ export const Contact: React.FC = () => {
                     href="https://github.com/Alex0775edu"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => sounds.playClick()}
                     className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 transition-all flex items-center gap-2 text-xs font-mono"
                   >
                     <GithubIcon className="w-4 h-4" />
@@ -199,6 +247,7 @@ export const Contact: React.FC = () => {
                     href="https://www.linkedin.com/in/aditya-kumar-cse/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => sounds.playClick()}
                     className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-blue-400 hover:border-blue-500/40 transition-all flex items-center gap-2 text-xs font-mono"
                   >
                     <LinkedinIcon className="w-4 h-4" />
@@ -209,6 +258,7 @@ export const Contact: React.FC = () => {
                     href={PERSONAL_INFO.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => sounds.playClick()}
                     className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-emerald-400 hover:border-emerald-500/40 transition-all flex items-center gap-2 text-xs font-mono"
                   >
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
@@ -221,18 +271,65 @@ export const Contact: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Interactive Validated Contact Form (7 cols) */}
+          {/* Right Column: Interactive Validated Contact Form with Real EmailJS (7 cols) */}
           <div className="lg:col-span-7">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#0b1222]/90 border border-slate-800 shadow-xl space-y-6">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#0b1222]/90 border border-slate-800 shadow-xl space-y-6 text-left">
               
               <div>
-                <h3 className="text-xl font-bold text-white font-mono">
-                  Send a Direct Message
+                <h3 className="text-xl font-bold text-white font-mono flex items-center gap-2">
+                  <span>Send a Direct Message</span>
+                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">
-                  Fill in your project requirements or message. Clicking 'Dispatch Message' opens your native email client with verified parameters.
+                  Fill out the form below. Messages are dispatched directly to Aditya Kumar's inbox.
                 </p>
               </div>
+
+              {submitStatus === 'success' && (
+                <div className="p-5 rounded-2xl bg-emerald-950/60 border border-emerald-500/50 space-y-2 animate-fade-in text-emerald-200">
+                  <div className="flex items-center gap-2 font-mono text-sm font-bold text-emerald-300">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                    <span>Message Sent Successfully!</span>
+                  </div>
+                  <p className="text-xs leading-relaxed text-emerald-300/90">
+                    {statusMessage}
+                  </p>
+                  <button
+                    onClick={() => setSubmitStatus('idle')}
+                    className="mt-2 text-xs font-mono underline text-emerald-400 hover:text-white"
+                  >
+                    Send another message
+                  </button>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="p-4 rounded-2xl bg-amber-950/50 border border-amber-500/40 space-y-3 animate-fade-in text-amber-200">
+                  <div className="flex items-center gap-2 font-mono text-xs font-bold text-amber-300">
+                    <AlertCircle className="w-4 h-4 text-amber-400" />
+                    <span>Delivery Notice</span>
+                  </div>
+                  <p className="text-xs leading-relaxed text-amber-300/90">
+                    {statusMessage}
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <button
+                      onClick={handleMailtoFallback}
+                      className="px-3 py-1.5 rounded-lg bg-amber-500 text-black font-mono text-xs font-bold hover:bg-amber-400 transition-colors"
+                    >
+                      Open Email App (Mailto)
+                    </button>
+                    <a
+                      href={PERSONAL_INFO.whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold hover:bg-emerald-500 transition-colors"
+                    >
+                      Chat on WhatsApp
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 
@@ -247,9 +344,10 @@ export const Contact: React.FC = () => {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. John Doe"
+                      placeholder="e.g. Rahul Sharma"
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-600 text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                       required
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -263,9 +361,10 @@ export const Contact: React.FC = () => {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. john@example.com"
+                      placeholder="e.g. rahul@example.com"
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-600 text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                       required
+                      disabled={isSubmitting}
                     />
                   </div>
                 </div>
@@ -283,6 +382,7 @@ export const Contact: React.FC = () => {
                     placeholder="e.g. Website Development or Management System"
                     className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-600 text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
 
@@ -296,34 +396,32 @@ export const Contact: React.FC = () => {
                     rows={5}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Describe your requirements, timeline, or query..."
+                    placeholder="Describe your project, timeline, or query..."
                     className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-600 text-sm focus:border-cyan-400 focus:outline-none transition-colors resize-none"
                     required
+                    disabled={isSubmitting}
                   />
-                </div>
-
-                {/* Transparent Notice */}
-                <div className="p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-800/30 flex items-start gap-2.5 text-xs text-slate-300">
-                  <AlertCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
-                  <span>
-                    No fake confirmations: submitting directly initiates an email to <span className="text-cyan-300 font-mono">aaditya0775@gmail.com</span> with your exact parameters.
-                  </span>
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl font-bold font-mono text-sm bg-gradient-to-r from-cyan-400 via-teal-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-xl font-bold font-mono text-sm bg-gradient-to-r from-cyan-400 via-teal-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Dispatch Message to Aditya</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-black" />
+                      <span>Sending Message Directly...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Send Message to Aditya</span>
+                    </>
+                  )}
                 </button>
 
-                {formSubmitted && (
-                  <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-mono text-center">
-                    Email client launched! If it didn't open automatically, you can directly email <a href={`mailto:${PERSONAL_INFO.email}`} className="underline font-bold">{PERSONAL_INFO.email}</a>.
-                  </div>
-                )}
               </form>
 
             </div>

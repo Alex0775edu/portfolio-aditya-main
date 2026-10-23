@@ -7,7 +7,7 @@ class SoundManager {
 
   constructor() {
     // Check localStorage for saved sound preference
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('aaditech_sound_enabled') : null;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('aditya_portfolio_sound_enabled') : null;
     this.isMuted = saved !== 'true';
   }
 
@@ -30,7 +30,7 @@ class SoundManager {
   public toggleMute(): boolean {
     this.isMuted = !this.isMuted;
     if (typeof window !== 'undefined') {
-      localStorage.setItem('aaditech_sound_enabled', (!this.isMuted).toString());
+      localStorage.setItem('aditya_portfolio_sound_enabled', (!this.isMuted).toString());
     }
     if (!this.isMuted) {
       this.playChime();

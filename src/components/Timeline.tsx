@@ -52,7 +52,7 @@ export const TIMELINE_DATA: TimelineEntry[] = [
     type: 'builder',
     period: 'System Milestone',
     title: 'Engineered Education Management System (EMS)',
-    organization: 'AaDiTeCh Platform / PythonAnywhere',
+    organization: 'PythonAnywhere Cloud Deployment',
     description: 'Built a full-featured web platform to organize courses, syllabus distribution, notes access, and student records supported by structured MySQL database design.',
     badge: 'Full Stack Build',
     tags: ['PHP', 'MySQL', 'Relational DB', 'JavaScript', 'Bootstrap'],

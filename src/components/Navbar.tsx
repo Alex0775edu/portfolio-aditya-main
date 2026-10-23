@@ -52,7 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             href="#hero"
             onClick={() => sounds.playClick()}
             className="group flex items-center gap-3 focus:outline-none"
-            aria-label="AaDiTeCh - Aditya Kumar Portfolio"
+            aria-label="Aditya - Full Stack Developer Portfolio"
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-teal-400 p-[1.5px] shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-transform duration-300 group-hover:scale-105">
               <div className="w-full h-full bg-[#080d1a] rounded-[10px] flex items-center justify-center">
@@ -63,11 +63,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             </div>
             <div className="flex flex-col text-left">
               <span className="font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors text-lg flex items-center gap-1.5 font-mono">
-                {PERSONAL_INFO.brand}
+                Aditya
                 <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               </span>
               <span className="text-[11px] text-slate-400 font-sans tracking-wide">
-                {PERSONAL_INFO.name}
+                Full Stack Developer
               </span>
             </div>
           </a>
