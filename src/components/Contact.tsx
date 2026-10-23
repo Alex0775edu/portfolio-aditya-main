@@ -361,7 +361,7 @@ export const Contact: React.FC = () => {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. rahul@example.com"
+                      placeholder="e.g. aditya@example.com"
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-600 text-sm focus:border-cyan-400 focus:outline-none transition-colors"
                       required
                       disabled={isSubmitting}
