@@ -1,3 +1,5 @@
+import aadiImg from '../aadi.png';
+
 export interface Project {
   id: string;
   title: string;
@@ -55,7 +57,7 @@ export const PERSONAL_INFO = {
   whatsappUrl: "https://wa.me/919023208267?text=Hi%20Aditya,%20I%20saw%20your%20portfolio",
   status: "Available for new projects & tech collaborations",
   resumePath: "/Aditya_Kumar_Resume.pdf",
-  profileImage: "/aditya.jpg",
+  profileImage: aadiImg,
   bioParagraph1: "I am a Full Stack Web Developer and the founder of SkillSum Innovations, based in Ballia, Uttar Pradesh. I focus on creating responsive, performant websites and structured database-backed management applications that solve tangible administrative and business problems.",
   bioParagraph2: "With a strong technical foundation spanning modern frontend interfaces, PHP, Python, and MySQL database architectures, I manage projects from initial wireframing to production deployment. Alongside client and management platforms, I lead SkillSum Innovations, delivering tailored technology solutions for businesses.",
   summaryStrengths: [
